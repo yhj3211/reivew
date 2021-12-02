@@ -5,20 +5,35 @@ import java.sql.Date;
 public class User {
 	public int id;
 	public String name;
+	public String password;
+	public String nickname;
 	public String loginId;
 	public String email;
 	public String number;
 	public String birth;
 	public Date createdAt;
 	public Date updatedAt;
+	
 	public int getId() {
 		return id;
+	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
 	public String getName() {
 		return name;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	public void setName(String name) {
 		this.name = name;

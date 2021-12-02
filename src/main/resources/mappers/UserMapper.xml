@@ -3,16 +3,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  
- <mapper namespace="com.yhj3211.review.dao.ReviewDAO">
+ <mapper namespace="com.yhj3211.review.user.dao.UserDAO">
  	
+ 	<!-- 회원가입 -->
  	<insert id="userSignUp"
  			parameterType="Map">
  			
- 		Insert Into `User`
+ 		Insert Into `user`
  			(
  				`name`,
  				`loginId`,
  				`password`,
+ 				`nickname`,
  				`email`,
  				`number`,
  				`birth`,
@@ -24,14 +26,50 @@
  				#{name},
  				#{loginId},
  				#{password},
+ 				#{nickname},
  				#{email},
  				#{number},
  				#{birth},
  				now(),
  				now()
- 				
- 			
+ 			)
  	</insert>
+ 
+ 	<!-- 로그인 -->
+ 	<select id="userSignIn"
+ 			resultType="com.yhj3211.review.user.model.User"
+ 			parameterType="map">
+ 			
+ 			SELECT
+ 					`id`,
+ 					`name`,
+ 					`loginId`,
+	 				`password`,
+	 				`nickname`,
+	 				`email`,
+	 				`number`,
+	 				`birth`,
+	 				`createdAt`,
+	 				`updatedAt`
+ 			FROM
+ 					`user`
+ 			where
+ 					`loginId` = #{loginId}
+ 			AND
+ 					`password` = #{password}
+
+ 	</select>
+ 
+ 	<!-- 아이디 중복확인 -->
+ 	<select id="loginIdDup"
+ 			parameterType="map"
+ 			resultType="int">
+ 			
+ 			select 	count(*)
+ 			from	`user`
+ 			where	`loginId` = #{loginId}
+ 	
+ 	</select>
  
  
  </mapper>
