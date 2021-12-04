@@ -69,7 +69,7 @@ public class UserRestController {
 		return result;
 	}
 	
-	//중복확인
+	//아이디 중복확인
 	@GetMapping("loginIdDup")
 	public Map<String, String> loginIdDup(@RequestParam("loginId") String loginId){
 		Map<String, String> result = new HashMap<>();
@@ -83,5 +83,20 @@ public class UserRestController {
 		return result;
 	}
 	
+	//닉네임 중복확인
+	@GetMapping("nicknameDup")
+	public Map<String, String> nicknameDup(@RequestParam("nickname") String nickname){
+		
+		Map<String, String> result = new HashMap<>();
+		
+		int count = userBO.nicknameDup(nickname);
+		
+		if(count > 0) {
+			result.put("result", "success");		
+		}else {
+			result.put("result", "fail");
+		}
+		return result;
+	}
 	
 }

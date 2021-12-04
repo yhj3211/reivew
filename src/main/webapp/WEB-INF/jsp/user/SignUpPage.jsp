@@ -32,12 +32,21 @@
 					
 					<div>
 						<small id="Dupfalse" class="d-none">회원가입 가능한 ID입니다.</small>	
-						<small id="Duptrue" class="d-none">중복된 아이디입니다.</small>			
+						<small id="Duptrue" class="d-none text-danger">중복된 아이디입니다.</small>			
 					</div>
 					
 						<input type="password" id="passwordInput" class="form-control mt-3" placeholder="패스워드">
 						<small id="errorPassword" class="text-danger d-none">비밀번호가 일치하지 않습니다.</small>
-						<input type="text" id="nicknameInput" class="form-control mt-3" placeholder="닉네임">
+						
+					<div class="d-flex align-items-center">
+						<input type="text" id="nicknameInput" class="form-control mt-3 mr-3" placeholder="닉네임">
+						<button type="submit" id="nicknameCheck" class="btn btn-info mt-3">중복체크</button>
+					</div>
+					
+					<div>	
+						<small id="NicDupFalse" class="d-none">회원가입 가능한 닉네임입니다</small>
+						<small id="NicDupTrue" class="text-danger d-none">중복된 닉네임입니다.</small>
+					</div>	
 						<input type="text" id="birthInput" class="form-control mt-3" placeholder="생년월일">
 						<input type="text" id="numberInput" class="form-control mt-3" placeholder="번호">
 						<input type="text" id="nameInput" class="form-control mt-3" placeholder="이름">
@@ -59,6 +68,7 @@
 			var number = $("#numberInput").val();
 			var birth = $("#birthInput").val();
 			var isDup = true;
+			var nicDup	= true;
 			
 			if($("#Dupfalse").hasClass("d-none")){
 				isDup = true;
@@ -70,6 +80,19 @@
 			
 			if(isDup == true){
 				alert("아이디 중복확인을 해주세요");
+				return;
+			}
+			
+			if($("#NicDupFalse").hasClass("d-none")){
+				nicDup = true;
+			}
+			
+			if($("#NicDupTrue").hasClass("d-none")){
+				nicDup = false;
+			}
+			
+			if(nicDup == true){
+				alert("닉네임 중복확인을 해주세요");
 				return;
 			}
 			
@@ -127,6 +150,7 @@
 			});
 		});
 			
+		//아이디 중복확인
 		$("#idCheck").on("click", function(){
 			var isDup = true;
 			var loginId = $("#loginIdInput").val();
@@ -145,7 +169,6 @@
 					if(data.result == "success"){
 						$("#Duptrue").removeClass("d-none");
 						$("#Dupfalse").addClass("d-none");
-						alert("중복된 아이디입니다");
 						return;
 						idDup = true;
 					}else{
@@ -157,6 +180,42 @@
 					alert("시스템 에러");
 				}
 			});
+		});
+		
+		//닉네임 중복확인
+		$("#nicknameCheck").on("click", function(){
+			var nickname = $("#nicknameInput").val().trim();
+			var nicDup = true;
+			
+			if(nickname == "" || nickname == null){
+				alert("닉네임을 입력해주세요");
+				return;
+			}
+
+			//<small id="NicDupFalse" class="d-none">회원가입 가능한 닉네임입니다</small>
+			//<small id="NicDupTrue" class="text-danger d-none">중복된 닉네임입니다.</small>
+			
+			
+			$.ajax({
+				type:"get",
+				url:"/user/nicknameDup",
+				data:{"nickname":nickname},
+				success:function(data){
+					if(data.result == "success"){
+						nicDup = true;
+						$("#NicDupTrue").removeClass("d-none");
+						$("#NicDupFalse").addClass("d-none");	
+						return;
+					}else{
+						$("#NicDupFalse").removeClass("d-none");
+						$("#NicDupTrue").addClass("d-none");
+						nicDup = false;
+					}
+				},error:function(e){
+					alert("시스템 오류. 잠시 뒤에 다시 실행해주세요.");
+				}
+				
+			});			
 		});
 	</script>
 	

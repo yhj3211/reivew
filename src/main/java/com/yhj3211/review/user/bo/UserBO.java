@@ -36,4 +36,10 @@ public class UserBO {
 	public int loginIdDup(String loginId) {
 		return userDAO.loginIdDup(loginId);
 	}
+	
+	//닉네임 중복확인
+	public int nicknameDup(String nickname) {
+		return userDAO.nicknameDup(nickname);
+	}
+	
 }
